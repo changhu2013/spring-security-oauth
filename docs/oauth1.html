@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spring OAuth</title>
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/bootstrap/css/bootstrap.min.css" />
+  <link href='http://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/bootstrap/css/bootstrap-select.css" />
+
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/main.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/typography.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/icons.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/projects.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/buttons.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/guide.css.css" />
+
+  <script type="text/javascript" src="/spring-security-oauth/js/jquery.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/bootstrap/js/bootstrap-select.js"></script>
+
+  <script type="text/javascript" src="/spring-security-oauth/js/underscore.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/backbone.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/projectDocumentationWidget.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/application.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/ZeroClipboard.min.js"></script>
+  <script type="text/javascript">
+    var apiBaseUrl = "http://springframework.io";
+    var projectId = "spring-security-oauth";
+    var siteBaseUrl = "/spring-security-oauth";
+  </script>
+  <script type="text/javascript" src="/spring-security-oauth/js/copySnippets.js"></script>
+  <meta name="google-site-verification" content="7qGntFPD9lWAVCtUu5U77v4l68PsTHf6xpzgjQv2j2M" />
+</head>
+<body>
+  <header class="navbar header--navbar">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <div class="spring-logo--container">
+          <div class="logo-bg"></div>
+          <a class="spring-logo" href="http://springframework.io"></a>
+        </div>
+        <ul class="nav pull-right">
+          <li class="navbar-link">
+            <a href="http://springframework.io/docs">Docs</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://springframework.io/guides">Guides</a>
+          </li>
+          <li class="navbar-link active">
+            <a href="http://springframework.io/projects">Projects</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://springframework.io/blog">Blog</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://forum.springframework.io">Forum</a>
+          </li>
+          <li class="navbar-link nav-search">
+            <i class="icon-search navbar-search--icon js-search-input-open"></i>
+            <div class="search-input-close js-search-input-close">x</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="search-dropdown--container js-search-dropdown">
+      <div class="container-fluid">
+        <div class="search-form--container">
+          <form class="form-inline form-search" action="http://springframework.io/search" method="get">
+            <input type="text" class="search-query search-form--form js-search-input" placeholder="Search for documention, guides, and posts..." name="q" />
+            <button type="submit" class="search-form--submit"><i class="icon-search"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="body--container container-fluid">
+    <h1 id="toc_0">OAuth 1 Developers Guide</h1>
+
+<h2 id="toc_1">Introduction</h2>
+
+<p>This is the developers guide for the support for OAuth 1.0. For OAuth 2.0, everything is different, so <a href="oauth2.html">see it&#39;s developers guide</a>.</p>
+
+<p>This user guide is divided into two parts, the first for the OAuth 1.0 provider, the second for the OAuth 1.0 consumer.  Here&#39;s a
+TOC for quick navigation:</p>
+
+<h2 id="toc_2">OAuth 1.0 Provider</h2>
+
+<p>The OAuth 1.0 provider is responsible for managing the OAuth 1.0 consumers that can access its protected resources on behalf of
+a user. The provider does this by managing and verifying the OAuth 1.0 tokens that can be used to access the protected
+resources. Of course, the provider must also supply an interface for the user to confirm that a consumer can be granted
+access to the protected resources (i.e. a confirmation page).</p>
+
+<h3 id="toc_3">Managing Consumers</h3>
+
+<p>The entry point into your database of consumers is defined by the <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/ConsumerDetailsService.html"><code>ConsumerDetailsService</code></a>.
+You must define your own <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/ConsumerDetailsService.html"><code>ConsumerDetailsService</code></a> that will load <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/ConsumerDetails.html"><code>ConsumerDetails</code></a>
+by the <em>consumer key</em>.  Note the existence of an <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/InMemoryConsumerDetailsService.html">in-memory implementation</a> of 
+<a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/ConsumerDetailsService.html"><code>ConsumerDetailsService</code></a>.</p>
+
+<p>When implementing your <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/ConsumerDetailsService.html"><code>ConsumerDetailsService</code></a> consider returning instances of 
+<a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/BaseConsumerDetails.html">BaseConsumerDetails</a> which contains additional information about the consumer that may be useful when 
+displaying a confirmation screen to the user.</p>
+
+<h3 id="toc_4">Managing Tokens</h3>
+
+<p>The <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/token/OAuthProviderTokenServices.html"><code>OAuthProviderTokenServices</code></a> interface defines the operations that are necessary to manage 
+OAuth 1.0 tokens. Note the following:</p>
+
+<ul>
+<li>When a request token is created, care must be taken to ensure that it is not an access token.</li>
+<li>When a request token is authorized, the authentication must be stored so that the subsequent access token can reference it.</li>
+<li>When an access token is created, it must reference the authentication that was used to authorized the request token that is used 
+to create the access token.</li>
+</ul>
+
+<p>When creating your <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/token/OAuthProviderTokenServices.html"><code>OAuthProviderTokenServices</code></a> implementation, you may want to consider extending
+the <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/token/RandomValueProviderTokenServices.html"><code>RandomValueProviderTokenServices</code></a> which creates tokens via random value and handles 
+everything except for the persistence of the tokens.  There is also an <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/token/InMemoryProviderTokenServices.html">in-memory implementation</a>
+of the <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/token/OAuthProviderTokenServices.html"><code>OAuthProviderTokenServices</code></a> that may be suitable, but note that when using the in-memory implementation
+a separate thread is spawned to take care of the cleanup of expired tokens.</p>
+
+<h3 id="toc_5">OAuth 1.0 Provider Request Filters</h3>
+
+<p>The requests for the tokens and for access to protected resources are handled by standard Spring Security request filters. The following filters
+are required in the Spring Security filter chain in order to implement OAuth 1.0:</p>
+
+<ul>
+<li>The <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/UnauthenticatedRequestTokenProcessingFilter.html"><code>UnauthenticatedRequestTokenProcessingFilter</code></a> is used to service the request for
+an unauthenticated request token. Default URL: <code>/oauth_request_token</code>.</li>
+<li>The <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/UserAuthorizationProcessingFilter.html"><code>UserAuthorizationProcessingFilter</code></a> is used authorize a request token. The user must be
+authenticated and it is assumed that the user has been presented with the appropriate confirmation page.</li>
+<li>The <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/AccessTokenProcessingFilter.html"><code>AccessTokenProcessingFilter</code></a> is used to service the request for an OAuth 1.0 access token.
+Default URL: <code>/oauth_access_token</code>.</li>
+<li>The <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/ProtectedResourceProcessingFilter.html"><code>ProtectedResourceProcessingFilter</code></a> is used to load the Authentication for the request given
+an authenticated access token.</li>
+</ul>
+
+<h3 id="toc_6">Managing Nonces</h3>
+
+<p>The OAuth 1.0 spec also recommends that the nonce that is supplied on every OAuth 1.0 request be checked to ensure it isn&#39;t used twice for the
+same timestamp. In order to do this, nonces must be stored and verified on every OAuth 1.0 request.  The interface that is used
+to validate nonces is <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/nonce/OAuthNonceServices.html"><code>OAuthNonceServices</code></a>. The default implementation, <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/nonce/ExpiringTimestampNonceServices.html"><code>ExpiringTimestampNonceServices</code></a>,
+does not adhere to this recommendation, but only validates that the timestamp isn&#39;t too old. If further assurance is required, you will need
+to supply your own implementation of <code>OAuthNonceServices</code>. Note the existence of an <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/nonce/InMemoryNonceServices.html">in-memory implementation</a>.</p>
+
+<h3 id="toc_7">Managing Callbacks</h3>
+
+<p>With the 1.0a revision of the OAuth 1.0 specification, the callback URL is provided at the time the request is made for a request token and will be used when
+redirecting the user back to the OAuth 1.0 consumer. Therefore, a means must be provided to persist the callback between requests. The interface that is used
+to persist callbacks is <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/callback/OAuthCallbackServices.html"><code>OAuthCallbackServices</code></a>. The default implementation, <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/callback/InMemoryCallbackServices.html"><code>InMemoryCallbackServices</code></a>
+persists the callbacks in-memory. You must supply your own implementation of <code>OAuthCallbackServices</code> if this is inadequate.</p>
+
+<h3 id="toc_8">Managing Verifiers</h3>
+
+<p>With the 1.0a revision of the OAuth 1.0 specification, the a verifier is provided to the consumer via the user that must be passed back
+to the provider when requesting the access token. Therefore, a means must be provided to create and persist the verifier. The interface
+that is used to this end is <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/verifier/OAuthVerifierServices.html"><code>OAuthVerifierServices</code></a>. The default implementation,
+<a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/verifier/RandomValueInMemoryVerifierServices.html"><code>RandomValueInMemoryVerifierServices</code></a>, creates a small, user-friendly (6 readable ASCII characters
+by default) verifier and persists the verifier in memory. You must supply your own implementation of <code>OAuthVerifierServices</code> if this is inadequate.</p>
+
+<h3 id="toc_9">Authorization By Consumer</h3>
+
+<p>It is sometimes required to limit access to a resource to a specific consumer or to a consumer that has specific roles. The classes in the
+<a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/attributes/package-summary.html"><code>org.springframework.security.oauth.provider.attributes</code></a> package can be used to do this. Methods can be protected using the
+annotations in that package, and the <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/attributes/ConsumerSecurityConfig.html"><code>ConsumerSecurityConfig</code></a> can be supplied to the standard Spring Security filter
+interceptor in order to enable the annotations. Finally, the <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/provider/attributes/ConsumerSecurityVoter.html"><code>ConsumerSecurityVoter</code></a> would need to be supplied to the
+Spring Security authentication manager.</p>
+
+<h3 id="toc_10">Provider Configuration</h3>
+
+<p>For the OAuth 1.0 provider, configuration is simplified using the custom spring configuration elements. The schema for these elements rests at
+<a href="http://www.springframework.org/schema/security/spring-security-oauth.xsd" title="oauth1.xsd">http://www.springframework.org/schema/security/spring-security-oauth.xsd</a>. The namespace is <code>http://www.springframework.org/schema/security/oauth</code>.</p>
+
+<p>The following configuration elements are used to supply provider configuration:</p>
+
+<h4 id="toc_11">The &quot;provider&quot; element</h4>
+
+<p>The <code>provider</code> element is used to configure the OAuth 1.0 provider mechanism. The following attributes can be applied to the <code>provider</code> element:</p>
+
+<ul>
+<li><code>consumer-details-service-ref</code>: The reference to the bean that defines the consumer details service. This is required if not autowired.</li>
+<li><code>token-services-ref</code>: The reference to the bean that defines the token services.</li>
+<li><code>request-token-url</code>: The URL at which a request for an unauthenticated request token will be serviced. Default value: &quot;/oauth_request_token&quot;</li>
+<li><code>authenticate-token-url</code>: The URL at which a request to authenticate a request token will be serviced. Default value: &quot;/oauth_authenticate_token&quot;</li>
+<li><code>access-token-url</code>: The URL at which a request for an access token (using an authenticated request token) will be serviced. Default value: &quot;/oauth_access_token&quot;</li>
+<li><code>access-granted-url</code>: The URL to which the user will be redirected upon authenticating a request token, but only if there was no callback URL supplied from the oauth consumer. Default value: &quot;/&quot;</li>
+<li><code>user-approval-url</code>: The URL to which the user will be redirected if for some reason authentication of a request token failed. Default behavior is to just issue a &quot;401: unauthorized&quot; response.</li>
+<li><code>nonce-services-ref</code>: The reference to the bean that defines the nonce services. Default is to supply an instance of <code>org.springframework.security.oauth.provider.nonce.ExpiringTimestampNonceServices</code></li>
+<li><code>callback-services-ref</code>: The reference to the bean that defines the callback services. Default is to supply an instance of <code>org.springframework.security.oauth.provider.callback.InMemoryCallbackServices</code></li>
+<li><code>verifier-services-ref</code>: The reference to the bean that defines the verifier services. Default is to supply an instance of <code>org.springframework.security.oauth.provider.verifier.RandomValueInMemoryVerifierServices</code></li>
+<li><code>auth-handler-ref</code>: The reference to the bean that defines the authentication handler. Default is to supply an instance of <code>org.springframework.security.oauth.provider.DefaultAuthenticationHandler</code></li>
+<li><code>support-ref</code>: The reference to the bean that defines the provider support logic. Default is to supply an instance of <code>org.springframework.security.oauth.provider.CoreOAuthProviderSupport</code></li>
+<li><code>token-id-param</code>: The name of the request parameter that specifies to the &#39;authenticate-token-url&#39; the id of the token that is to be authenticated. Default value: &quot;requestToken&quot;.</li>
+<li><code>callback-url-param</code>: The name of the request parameter that specifies to the &#39;authenticate-token-url&#39; the callback URL to which the user is to be redirected upon successful authentication. Default value: &quot;callbackURL&quot;.</li>
+</ul>
+
+<h4 id="toc_12">The &quot;consumer-details-service&quot; element</h4>
+
+<p>The <code>consumer-details-service</code> element is used to define an in-memory implementation of the consumer details service.  It takes an <code>id</code> attribute and an
+arbitrary number of <code>consumer</code> child elements that define the following attributes for each consumer:</p>
+
+<ul>
+<li><code>key</code>: (required) The consumer key.</li>
+<li><code>secret</code>: (required) The consumer secret.</li>
+<li><code>name</code>: The (display) name of the consumer.</li>
+<li><code>authorities</code>: Comma-separated list of authorities (e.g. roles) that are granted to the consumer.</li>
+<li><code>resourceName</code>: The name of the resource.</li>
+<li><code>resourceDescription</code>: The description of the resource.</li>
+<li><code>requiredToObtainAuthenticatedToken</code>: Whether this consumer is required to obtain an authenticated oauth token. If <em>true</em>, it means that the OAuth 1.0 consumer won&#39;t be granted access to the protected resource unless the user is directed to the token authorization page. If <em>false</em>, it means that the provider has an additional level of trust with the consumer. Not requiring an authenticated access token is also known as &quot;2-legged&quot; OAuth or &quot;signed fetch&quot;. For more information, see <a href="./twolegged.html">two-legged OAuth</a>.</li>
+</ul>
+
+<h4 id="toc_13">The &quot;token-services&quot; element</h4>
+
+<p>The <code>token-services</code> element is a simple element that can be used to provide an in-memory implementation of the provider token services.
+It supports an <em>id</em> attribute (bean id) and a <em>cleanupInterval</em> attribute that specifies how often the cleanup thread should wake up (in seconds).</p>
+
+<h4 id="toc_14">The &quot;verifier-services&quot; element</h4>
+
+<p>The <code>verifier-services</code> element is a simple element that can be used to provide an in-memory implementation of the provider verifier services.
+It supports an <code>id</code> attribute (bean id) and a <code>verifierLengthBytes</code> attribute that specifies the length of the verifier.</p>
+
+<h3 id="toc_15">Configuring An OAuth-Aware Expression Handler</h3>
+
+<p>You may want to take advantage of Spring Security&#39;s <a href="http://static.springsource.org/spring-security/site/docs/3.0.x/reference/el-access.html">expression-based access control</a>.
+You can register a oauth-aware expression handler with the <code>expression-handler</code> element. Use the id of the oauth expression handler to add oauth-aware
+expressions to the built-in expressions.</p>
+
+<p>The expressions include <em>oauthConsumerHasRole</em>, <em>oauthConsumerHasAnyRole</em>, and <em>denyOAuthConsumer</em> which can be used to provide access based on the role of the
+oauth consumer.</p>
+
+<h2 id="toc_16">OAuth 1.0 Consumer</h2>
+
+<p>The OAuth 1.0 consumer logic is responsible for (1) obtaining an OAuth 1 access token and (2) signing requests for OAuth 1
+protected resources. OAuth for Spring Security provides a request filter for acquiring the access token, a request filter
+for ensuring that access to certain URLs is locked down to a set of acquired access token, and utilities for making a request
+for a protected resource. A consumer must be responsible for maintaing a list of protected resources that can be accessed and,
+like the provider, a consumer must be responsible for managing the OAuth 1.0 tokens.</p>
+
+<p>If you were discouraged by the complexity of implementing an OAuth 1.0 provider, take heart.  Implementation of an OAuth 1.0
+consumer is easier, partially because OAuth 1.0 for Spring Security provides suitable defaults for most cases.</p>
+
+<h3 id="toc_17">Managing Protected Resources</h3>
+
+<p>A database of protected resources that are accessible by a consumer must be provided through the <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/ProtectedResourceDetailsService.html"><code>ProtectedResourceDetailsService</code></a>.
+Each protected resource must provide all information related to obtaining access to it. This includes the URL to obtain a request token, the URL to which to
+redirect the user for authorization, the URL at which to obtain an access token, etc.  It also contains various properties that describe the provider of the
+protected resource. Consider the existence of the <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/InMemoryProtectedResourceDetailsService.html"><code>InMemoryProtectedResourceDetailsService</code></a>
+and the <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/BaseProtectedResourceDetails.html"><code>BaseProtectedResourceDetails</code></a> for help in creating the database of protected resources.</p>
+
+<h3 id="toc_18">Managing Provider Tokens</h3>
+
+<p>Like the provider, the consumer must be responsible for managing the OAuth tokens. The necessary interface for managing the consumer tokens is
+<a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/token/OAuthConsumerTokenServices.html"><code>OAuthConsumerTokenServices</code></a>. Assuming that the consumer can leverage an active HTTP session, the default
+<a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/token/HttpSessionBasedTokenServices.html"><code>HttpSessionBasedTokenServices</code></a> might be adequate, but if you&#39;d like to persist access tokens longer than a user
+session, you&#39;ll have to implement your own persistent implementation of the token services.</p>
+
+<h3 id="toc_19">OAuth 1.0 Consumer Request Filters</h3>
+
+<p>There are two request filters that are applicable to the OAuth consumer logic. The first filter, <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/OAuthConsumerContextFilter.html"><code>OAuthConsumerContextFilter</code></a>,
+is responsible for establishing an OAuth-specific security context, very similar to Spring Security&#39;s <code>SecurityContext</code>. The security
+context simply contains a set of access tokens that have been obtained for the current user. This security context is leveraged when making requests
+for protected resources.</p>
+
+<p>There is another request filter, <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/OAuthConsumerProcessingFilter.html"><code>OAuthConsumerProcessingFilter</code></a>, that can be applied to specific URLs or
+URL patterns that require access to a remote protected resource. Putting this filter in Spring Security&#39;s filter chain
+will ensure that any access tokens needed for the specified URL patters will be obtained before allowing access to the resources.</p>
+
+<h3 id="toc_20">Requesting Protected Resources</h3>
+
+<p>The <a href="http://static.springsource.org/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/OAuthRestTemplate.html"><code>OAuthRestTemplate</code></a> can be used to make REST-like requests to resources protected by OAuth. It&#39;s used just like a standard
+RestTemplate (new in Spring 3), but is supplied with a specific <code>ProtectedResourcDetails</code> so it can sign its requests.</p>
+
+<h3 id="toc_21">Consumer Configuration</h3>
+
+<p>For the OAuth 1.0 consumer, configuration is simplified using the custom spring configuration elements. The schema for these elements rests at
+<a href="http://www.springframework.org/schema/security/spring-security-oauth.xsd" title="oauth1.xsd">http://www.springframework.org/schema/security/spring-security-oauth.xsd</a>.
+The namespace is <code>http://www.springframework.org/schema/security/oauth</code>.</p>
+
+<p>Two custom configuration elements are used to supply provider configuration:</p>
+
+<h4 id="toc_22">The &quot;consumer&quot; element</h4>
+
+<p>The <code>consumer</code> element configures the OAuth 1.0 consumer mechanism. This element is used to set up the security filter(s) that will handle
+the OAuth consumer logic. The OAuth context filter establishes a context for the OAuth consumer logic. The OAuth access filter is used to
+apply OAuth constraints on specified URLs (request paths) in your application. The access filter is applied by specified one or more <code>url</code>
+child elements to the <code>consumer</code> element.</p>
+
+<p>The <code>url</code> element supports the following attributes:</p>
+
+<ul>
+<li><code>pattern</code>: (required) The URL pattern.</li>
+<li><code>resources</code>: (required) Comma-separated list of the ids of the protected resources that the URL requires access to.</li>
+<li><code>httpMethod</code>: The HTTP method that requires access. Default is all methods.</li>
+</ul>
+
+<p>The <code>consumer</code> element also supports the following attributes:</p>
+
+<ul>
+<li><code>resource-details-service-ref</code>: The reference to the resource details service.  This is required if not autowired.</li>
+<li><code>oauth-failure-page</code>: The page to which to redirect the user if a problem happens during OAuth 1.0 authentication.</li>
+<li><code>entry-point-ref</code>: Reference to the entry point to use if a problem happens during OAuth 1.0 authentication (overrides <em>oauth-failure-page</em>).</li>
+<li><code>path-type</code>: URL path type.  Default value: &quot;ant&quot;.</li>
+<li><code>lowercase-comparisons</code>: Whether to use lowercase comparisons.</li>
+<li><code>support-ref</code>: Reference to the OAuth 1.0 consumer support logic.</li>
+<li><code>token-services-factory-ref</code>: Reference to the token services factory.</li>
+</ul>
+
+<h4 id="toc_23">The &quot;resource-details-service&quot; element</h4>
+
+<p>The <code>resource-details-service</code> element configures an in-memory implementation of the resource details. It supports an &quot;id&quot; attribute
+and an arbitrary number of <code>resource</code> child elements which are used to define the protected resources and support the following attributes:</p>
+
+<ul>
+<li><code>id</code>: (required) The resource id.</li>
+<li><code>key</code>: (required) The consumer key.</li>
+<li><code>secret</code>: (required) The shared secret.</li>
+<li><code>request-token-url</code>: (required) The URL to use to get the OAuth 1.0 request token.</li>
+<li><code>user-authorization-url</code>: (required) The URL to which to redirect the user to authorize the request token.</li>
+<li><code>access-token-url</code>: (required) The URL to use to get an OAuth 1.0 access token.</li>
+<li><code>signature-method</code>: The signature method to use (e.g. &quot;HMAC-SHA1&quot;, &quot;PLAINTEXT&quot;, etc.). Default &quot;HMAC-SHA1&quot;.</li>
+<li><code>user-authorization-token-param</code>: Name of the request parameter to use to pass the value of the request token when redirecting the user to the authorization page. Default value: &quot;requestToken&quot;</li>
+<li><code>user-authorization-callback-param</code>: Name of the request parameter to use to pass the value of the callback URL when redirecting the user to the authorization page. Default value: &quot;callbackURL&quot;</li>
+<li><code>accepts-authorization-header</code>: Whether the provider accepts the HTTP authorization header. Default: &quot;true&quot;</li>
+<li><code>authorization-header-realm</code>: The &quot;realm&quot; for the HTTP authorization header.</li>
+<li><code>use10a</code>: Whether the resource is protected using OAuth 1.0a. Default: &quot;true&quot;</li>
+</ul>
+
+<h2 id="toc_24">Customizations Not Explicitly Supported by Namespace</h2>
+
+<p>The XML DSL has extension points for some of the most common use
+cases, generally specified through strategies injected through
+attributes (e.g. the <code>token-services-ref</code> in the <code>&lt;provider/&gt;</code>), but
+occasionally you may need to add customizations not supported in this
+way.  Other cases can be handled locally without losing the benefit of
+the namespace because the bean definitions created are all designed to
+be easy to override.  The namespace parsers create bean definitions
+with fixed bean definition names (hopefully easy to guess, but it is
+not hard to verify them by reading the source code of the parsers),
+and all you need to do to override one part of the namespace support
+is create a bean definition with the same name.  For instance, the
+<code>&lt;provider/&gt;</code> element creates an <code>OAuthProviderProcessingFilter</code> which
+itself has a default <code>ProtectedResourceProcessingFilter</code>, but if you
+wanted to replace it you could override the bean definition:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"> &lt;oauth:provider .../&gt;
+
+ &lt;bean  id=&quot;oauthProtectedResourceFilter&quot; class=&quot;org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter&quot;&gt;
+    ...
+ &lt;/bean&gt;
+</code></pre></div>
+<p>In this example, the explicit bean definition overrides the one created by the <code>&lt;provider/&gt;</code> because of the ordering in the application context declaration (this is a standard Spring bean factory feature). Bean definitions created by the namespace parsers follow the convention that they start with &quot;oauth&quot; and generally they are the class name of the default implementation provided by the framework.</p>
+
+  </div>
+
+  <footer class="footer">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span8">
+          <div class="navbar">
+            <div class="container">
+              <ul class="nav">
+                <li><a href="http://springframework.io/tools">Tools</a></li>
+                <li><a href="http://springframework.io/services">Services</a></li>
+                <li><a href="http://springframework.io/about">About Us</a></li>
+                <li><a href="http://springframework.io/jobs">Work With Us</a></li>
+              </ul>
+            </div>
+          </div>
+          &copy; <script type="text/javascript"> var d = new Date();
+                document.write(d.getFullYear());</script> GoPivotal, Inc. All Rights Reserved.
+          <a href="http://www.gopivotal.com/terms-of-use">Terms</a>,
+          <a href="http://www.gopivotal.com/privacy-policy">Privacy</a>, and
+          <a href="http://springframework.io/logos">Usage</a>
+        </div>
+        <div class="span4 footer-newsletter--wrapper pull-right">
+          <div class="footer-newsletter--container">
+            <form>
+              <label>
+                Subscribe to our newsletter
+              </label>
+              <div class="footer-subscribe--input--container">
+                <input class="footer-subscribe--input" placeholder="Email Address (NOT REAL)" />
+                <input type="submit" class="btn footer-subscibe--btn" value="Subscribe" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div id="scrim"></div>
+  <script type="text/html" id="project-documentation-widget-template">
+    <div class="right-pane-widget--container no-top-border project-documentation--container">
+        <div class="item-dropdown-widget">
+            <div class="item-dropdown--title">{@= name @}</div>
+            <div class="item--dropdown">
+                <div class="item--body">
+                    <div class="item--body-title">
+                        <div class="item--left-column">Release</div>
+                        <div class="item--right-column">Documentation</div>
+                    </div>
+                    {@ _.each(releases, function(release) { @}
+                    <div class="item--body--version">
+                        <div class="item--left-column">
+                            <p>{@= release.version @}</p>
+                            <div class="spring-icon {@= release.statusIconClass() @}"></div>
+                        </div>
+                        <div class="item--right-column">
+                            <a href='{@= release.refDocUrl @}' class="docs-link reference-link">Reference</a>
+                            <a href='{@= release.apiDocUrl @}' class="docs-link api-link">API</a>
+                        </div>
+                    </div>
+                    {@ }); @}
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="project-download-widget-controls-template">
+    <div class="js-download-widget-selector">
+        <select class='selector selectpicker'>
+            {@ _.each(releases, function(release, index) { @}
+            <option value="{@= index @}" data-content="<span>{@= release.versionDisplayName @}</span><div class='spring-icon {@= release.statusIconClass() @}'/>" data-current="{@= release.current @}"> ()</option>
+            {@ }); @}
+        </select>
+    </div>
+
+    <div class="item-slider-widget js-item-slider--wrapper">
+        <div class="item-slider--container">
+            <div class="item--slider js-item--slider"></div>
+            <div class="item js-active js-item" data-snippet-type='maven'>
+                Maven
+            </div>
+            <div class="item js-item" data-snippet-type='gradle'>
+                Gradle
+            </div>
+            <div class="item js-item" data-snippet-type='zip'>
+                Zip
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
+
+
+
+
+
+
+<script type="text/html" id="project-download-maven-widget-template">
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;{@= groupId @}&lt;/groupId&gt;
+        &lt;artifactId&gt;{@= artifactId @}&lt;/artifactId&gt;
+        &lt;version&gt;{@= version @}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+{@ if (repository) { @}
+&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;{@= repository.id @}&lt;/id&gt;
+        &lt;name&gt;{@= repository.name @}&lt;/name&gt;
+        &lt;url&gt;{@= repository.url @}&lt;/url&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;{@= repository.snapshotsEnabled @}&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;{@ } @}
+</script>
+
+
+
+
+
+
+
+<script type="text/html" id="project-download-gradle-widget-template">
+dependencies {
+    compile '{@= groupId @}:{@= artifactId @}:{@= version @}'
+}
+{@ if (repository) { @}
+repositories {
+    maven {
+        url '{@= repository.url @}'
+    }
+}
+{@ } @}
+</script>
+
+<script type="text/html" id="project-download-zip-widget-template">
+This is a zip url
+</script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42447510-1', 'cfapps.io');
+    ga('send', 'pageview');
+
+  </script>
+</body>
+</html>

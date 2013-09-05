@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spring OAuth</title>
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/bootstrap/css/bootstrap.min.css" />
+  <link href='http://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/bootstrap/css/bootstrap-select.css" />
+
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/main.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/typography.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/icons.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/projects.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/buttons.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/guide.css.css" />
+
+  <script type="text/javascript" src="/spring-security-oauth/js/jquery.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/bootstrap/js/bootstrap-select.js"></script>
+
+  <script type="text/javascript" src="/spring-security-oauth/js/underscore.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/backbone.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/projectDocumentationWidget.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/application.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/ZeroClipboard.min.js"></script>
+  <script type="text/javascript">
+    var apiBaseUrl = "http://springframework.io";
+    var projectId = "spring-security-oauth";
+    var siteBaseUrl = "/spring-security-oauth";
+  </script>
+  <script type="text/javascript" src="/spring-security-oauth/js/copySnippets.js"></script>
+  <meta name="google-site-verification" content="7qGntFPD9lWAVCtUu5U77v4l68PsTHf6xpzgjQv2j2M" />
+</head>
+<body>
+  <header class="navbar header--navbar">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <div class="spring-logo--container">
+          <div class="logo-bg"></div>
+          <a class="spring-logo" href="http://springframework.io"></a>
+        </div>
+        <ul class="nav pull-right">
+          <li class="navbar-link">
+            <a href="http://springframework.io/docs">Docs</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://springframework.io/guides">Guides</a>
+          </li>
+          <li class="navbar-link active">
+            <a href="http://springframework.io/projects">Projects</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://springframework.io/blog">Blog</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://forum.springframework.io">Forum</a>
+          </li>
+          <li class="navbar-link nav-search">
+            <i class="icon-search navbar-search--icon js-search-input-open"></i>
+            <div class="search-input-close js-search-input-close">x</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="search-dropdown--container js-search-dropdown">
+      <div class="container-fluid">
+        <div class="search-form--container">
+          <form class="form-inline form-search" action="http://springframework.io/search" method="get">
+            <input type="text" class="search-query search-form--form js-search-input" placeholder="Search for documention, guides, and posts..." name="q" />
+            <button type="submit" class="search-form--submit"><i class="icon-search"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="body--container container-fluid">
+    <p>These are the Spring Security OAuth sample apps and integration tests.
+They are split into OAuth (1a) and OAuth2 samples.  Look in the
+subdirectory <code>oauth</code> and <code>oauth2</code> respectively for components of the
+sample you are interested in.  They are broadly speaking similar
+functionally - there are two web apps, one (<code>sparklr</code>) is a provider
+or OAuth services, and the other (<code>tonr</code>) is a consumer of the
+services.  The <code>tonr</code> app is also able to consume external resources
+(e.g. Facebook), and the precise external resource it consumes has
+been chosen to show the use of the relevant protocol.</p>
+
+<p>The <code>sparklr</code> app is a photo storage and browsing service, but it
+doesn&#39;t know how to print your photos.  Thats where <code>tonr</code> comes in.
+You go to <code>tonr</code> to browse the photos that are stored in <code>sparklr</code> and
+&quot;print&quot; them (this feature is not actually implemented).  The <code>tonr</code>
+app has to get your permission to access the photos, but only for read
+access - this is the key separation of concerns that is offered by
+OAuth protocols: <code>sparklr</code> is able to ask the user to authorize <code>tonr</code>
+to read his photos for the purpose of printing them.</p>
+
+<p>To run the apps the easiest thing is to first install all the
+artifacts using <code>mvn install</code> and then go to the <code>tonr</code> directory (in
+<code>oauth</code> or <code>oauth2</code>) and run <code>mvn tomcat:run</code>.  You can also use the
+command line to build war files with <code>mvn package</code> and drop them in
+your favourite server, or you can run them directly from an IDE.</p>
+
+<p>Visit <code>http://localhost:8080/tonr2</code> in a browser and go to the
+<code>sparklr</code> tab.  The result should be:</p>
+
+<ul>
+<li><p>You are prompted to authenticate with <code>tonr</code> (the login screen tells
+you the users available and their passwords)</p></li>
+<li><p>The correct authorization is not yet in place for <code>tonr</code> to access
+your photos on <code>sparklr</code> on your behalf, so <code>tonr</code> redirects your
+browser to the <code>sparklr</code> UI to get the authorization.</p></li>
+<li><p>You are prompted to authenticate with <code>sparklr</code>.</p></li>
+<li><p>Then <code>sparklr</code> will ask you if you authorize <code>tonr</code> to access your
+photos.</p></li>
+<li><p>If you say &quot;yes&quot; then your browser will be redirected back to <code>tonr</code>
+and this time the correct authorization is present, so you will be
+able to see your photos.</p></li>
+</ul>
+
+<h2 id="toc_0">How to build the WAR files</h2>
+
+<p>Use Maven (2.2.1 works) and, from this directory do </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ mvn package
+</code></pre></div>
+<p>and then look in <code>*/{sparklr,tonr}/target</code> for the war files.  Deploy
+them with context roots <code>{/sparklr,/tonr}</code> (for OAuth 1) and
+<code>{/sparklr2,/tonr2}</code> (for OAuth 2) respectively in your favourite web
+container, and fire up the <code>tonr</code> app to see the two working together.</p>
+
+<h2 id="toc_1">How to deploy in Eclipse (e.g. STS)</h2>
+
+<p>To deploy the apps in Eclipse you will need the Maven plugin (<code>m2e</code>)
+and the Web Tools Project (WTP) plugins.  If you have SpringSource
+Toolsuite (STS) you should already have those, aso you can deploy the
+apps very simply.  (Update the WTP plugin to at least version 0.12 at
+<a href="http://m2eclipse.sonatype.org/sites/m2e-extras">http://m2eclipse.sonatype.org/sites/m2e-extras</a> if you have an older
+one, or the context roots for the apps will be wrong.)</p>
+
+<ul>
+<li><p>Ensure the Spring Security OAuth dependencies are available locally
+first.  You can do this by importing all projects, or by building on
+the command line before importing the samples (using <code>mvn install</code>).</p></li>
+<li><p>Import the projects:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">File-&gt;Import...-&gt;Maven-&gt;Existing Maven Projects-&gt;Next
+</code></pre></div>
+<p>browse to the parent directory containing all the
+samples and press <code>Finish</code>.</p></li>
+<li><p>Wait for the projects to build, and then just right click on the two
+webapps (<code>sparklr</code> and <code>tonr</code> or <code>sparklr2</code> and <code>tonr2</code>) and <code>Run
+As</code> then <code>Run on Server</code>.  If you have a server set up already
+(e.g. tcServer is probably there out of teh box) select that, or
+else create a new server, and follow the dialogues.</p>
+
+<p>If you have a server instance set up you can also drag and drop the
+apps to a server instance (e.g. tcServer or Tomcat) in the <code>Servers</code>
+View.</p></li>
+<li><p>Visit the <code>tonr</code> app in a browser
+(e.g. <a href="http://localhost:8080/tonr2">http://localhost:8080/tonr2</a>).</p></li>
+</ul>
+
+  </div>
+
+  <footer class="footer">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span8">
+          <div class="navbar">
+            <div class="container">
+              <ul class="nav">
+                <li><a href="http://springframework.io/tools">Tools</a></li>
+                <li><a href="http://springframework.io/services">Services</a></li>
+                <li><a href="http://springframework.io/about">About Us</a></li>
+                <li><a href="http://springframework.io/jobs">Work With Us</a></li>
+              </ul>
+            </div>
+          </div>
+          &copy; <script type="text/javascript"> var d = new Date();
+                document.write(d.getFullYear());</script> GoPivotal, Inc. All Rights Reserved.
+          <a href="http://www.gopivotal.com/terms-of-use">Terms</a>,
+          <a href="http://www.gopivotal.com/privacy-policy">Privacy</a>, and
+          <a href="http://springframework.io/logos">Usage</a>
+        </div>
+        <div class="span4 footer-newsletter--wrapper pull-right">
+          <div class="footer-newsletter--container">
+            <form>
+              <label>
+                Subscribe to our newsletter
+              </label>
+              <div class="footer-subscribe--input--container">
+                <input class="footer-subscribe--input" placeholder="Email Address (NOT REAL)" />
+                <input type="submit" class="btn footer-subscibe--btn" value="Subscribe" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div id="scrim"></div>
+  <script type="text/html" id="project-documentation-widget-template">
+    <div class="right-pane-widget--container no-top-border project-documentation--container">
+        <div class="item-dropdown-widget">
+            <div class="item-dropdown--title">{@= name @}</div>
+            <div class="item--dropdown">
+                <div class="item--body">
+                    <div class="item--body-title">
+                        <div class="item--left-column">Release</div>
+                        <div class="item--right-column">Documentation</div>
+                    </div>
+                    {@ _.each(releases, function(release) { @}
+                    <div class="item--body--version">
+                        <div class="item--left-column">
+                            <p>{@= release.version @}</p>
+                            <div class="spring-icon {@= release.statusIconClass() @}"></div>
+                        </div>
+                        <div class="item--right-column">
+                            <a href='{@= release.refDocUrl @}' class="docs-link reference-link">Reference</a>
+                            <a href='{@= release.apiDocUrl @}' class="docs-link api-link">API</a>
+                        </div>
+                    </div>
+                    {@ }); @}
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="project-download-widget-controls-template">
+    <div class="js-download-widget-selector">
+        <select class='selector selectpicker'>
+            {@ _.each(releases, function(release, index) { @}
+            <option value="{@= index @}" data-content="<span>{@= release.versionDisplayName @}</span><div class='spring-icon {@= release.statusIconClass() @}'/>" data-current="{@= release.current @}"> ()</option>
+            {@ }); @}
+        </select>
+    </div>
+
+    <div class="item-slider-widget js-item-slider--wrapper">
+        <div class="item-slider--container">
+            <div class="item--slider js-item--slider"></div>
+            <div class="item js-active js-item" data-snippet-type='maven'>
+                Maven
+            </div>
+            <div class="item js-item" data-snippet-type='gradle'>
+                Gradle
+            </div>
+            <div class="item js-item" data-snippet-type='zip'>
+                Zip
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
+
+
+
+
+
+
+<script type="text/html" id="project-download-maven-widget-template">
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;{@= groupId @}&lt;/groupId&gt;
+        &lt;artifactId&gt;{@= artifactId @}&lt;/artifactId&gt;
+        &lt;version&gt;{@= version @}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+{@ if (repository) { @}
+&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;{@= repository.id @}&lt;/id&gt;
+        &lt;name&gt;{@= repository.name @}&lt;/name&gt;
+        &lt;url&gt;{@= repository.url @}&lt;/url&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;{@= repository.snapshotsEnabled @}&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;{@ } @}
+</script>
+
+
+
+
+
+
+
+<script type="text/html" id="project-download-gradle-widget-template">
+dependencies {
+    compile '{@= groupId @}:{@= artifactId @}:{@= version @}'
+}
+{@ if (repository) { @}
+repositories {
+    maven {
+        url '{@= repository.url @}'
+    }
+}
+{@ } @}
+</script>
+
+<script type="text/html" id="project-download-zip-widget-template">
+This is a zip url
+</script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42447510-1', 'cfapps.io');
+    ga('send', 'pageview');
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spring OAuth</title>
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/bootstrap/css/bootstrap.min.css" />
+  <link href='http://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/bootstrap/css/bootstrap-select.css" />
+
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/main.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/typography.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/icons.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/projects.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/buttons.css.css" />
+  <link rel="stylesheet" type="text/css" href="/spring-security-oauth/css/guide.css.css" />
+
+  <script type="text/javascript" src="/spring-security-oauth/js/jquery.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/bootstrap/js/bootstrap-select.js"></script>
+
+  <script type="text/javascript" src="/spring-security-oauth/js/underscore.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/backbone.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/projectDocumentationWidget.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/application.js"></script>
+  <script type="text/javascript" src="/spring-security-oauth/js/ZeroClipboard.min.js"></script>
+  <script type="text/javascript">
+    var apiBaseUrl = "http://springframework.io";
+    var projectId = "spring-security-oauth";
+    var siteBaseUrl = "/spring-security-oauth";
+  </script>
+  <script type="text/javascript" src="/spring-security-oauth/js/copySnippets.js"></script>
+  <meta name="google-site-verification" content="7qGntFPD9lWAVCtUu5U77v4l68PsTHf6xpzgjQv2j2M" />
+</head>
+<body>
+  <header class="navbar header--navbar">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <div class="spring-logo--container">
+          <div class="logo-bg"></div>
+          <a class="spring-logo" href="http://springframework.io"></a>
+        </div>
+        <ul class="nav pull-right">
+          <li class="navbar-link">
+            <a href="http://springframework.io/docs">Docs</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://springframework.io/guides">Guides</a>
+          </li>
+          <li class="navbar-link active">
+            <a href="http://springframework.io/projects">Projects</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://springframework.io/blog">Blog</a>
+          </li>
+          <li class="navbar-link">
+            <a href="http://forum.springframework.io">Forum</a>
+          </li>
+          <li class="navbar-link nav-search">
+            <i class="icon-search navbar-search--icon js-search-input-open"></i>
+            <div class="search-input-close js-search-input-close">x</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="search-dropdown--container js-search-dropdown">
+      <div class="container-fluid">
+        <div class="search-form--container">
+          <form class="form-inline form-search" action="http://springframework.io/search" method="get">
+            <input type="text" class="search-query search-form--form js-search-input" placeholder="Search for documention, guides, and posts..." name="q" />
+            <button type="submit" class="search-form--submit"><i class="icon-search"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="body--container container-fluid">
+    <p>This project provides support for using Spring Security with OAuth
+(1a) and OAuth2.  It provides features for implementing both consumers
+and providers of these protocols using standard Spring and Spring
+Security programming models and configuration idioms.</p>
+
+<h1 id="toc_0">Getting Started</h1>
+
+<p><a href="https://github.com/SpringSource/spring-security-oauth/tags">Download</a>
+or clone from
+<a href="https://github.com/SpringSource/spring-security-oauth">GIT</a> and then
+use Maven (2.2.*):</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ git clone ...
+$ mvn install -P bootstrap
+</code></pre></div>
+<p>Use the <code>bootstrap</code> profile only the first time - it enables some
+repositories that can&#39;t be exposed in the poms by default. You may
+find it useful to add this profile to your local <code>settings.xml</code>.</p>
+
+<p>SpringSource ToolSuite users (or Eclipse users with the latest
+m2eclipse plugin) can import the projects as existing Maven projects.</p>
+
+<p>Spring Security OAuth is released under the terms of the Apache
+Software License Version 2.0 (see license.txt).</p>
+
+<h2 id="toc_1">Samples</h2>
+
+<p>Samples and integration tests are in <a href="samples">a subdirectory</a>.  There
+is a separate README there for orientation and information.  Once you
+have installed the artifacts locally (as per the getting started
+instructions above) you should be able to</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ cd samples/oauth2/tonr
+$ mvn tomcat:run
+</code></pre></div>
+<p>and visit the app in your browser at <a href="http://localhost:8080/tonr2/">http://localhost:8080/tonr2/</a>
+to check that it works.  (This is for the OAuth 2.0 sample, for the
+OAuth 1.0a sample just remove the &quot;2&quot; from the directory path.)</p>
+
+<h2 id="toc_2">Changelog</h2>
+
+<p>Lists of issues addressed per release can be found in
+<a href="https://jira.springsource.org/browse/SECOAUTH#selectedTab=com.atlassian.jira.plugin.system.project%3Aversions-panel">JIRA</a>.</p>
+
+<h2 id="toc_3">Additional Resources</h2>
+
+<ul>
+<li><a href="docs/Home.html">Spring Security OAuth User Guide</a></li>
+<li><a href="http://github.com/SpringSource/spring-security-oauth">Spring Security OAuth Source</a></li>
+<li><a href="http://forum.springsource.org/forumdisplay.php?f=79">Spring Security OAuth Forum</a></li>
+</ul>
+
+<h1 id="toc_4">Contributing to Spring Security OAuth</h1>
+
+<p>Here are some ways for you to get involved in the community:</p>
+
+<ul>
+<li>Get involved with the Spring community on the Spring Community Forums.  Please help out on the
+<a href="http://forum.springsource.org/forumdisplay.php?f=79">forum</a> by responding to questions and joining the debate.</li>
+<li>Create <a href="https://jira.springsource.org/browse/SECOAUTH">JIRA</a> tickets for bugs and new features and comment and
+vote on the ones that you are interested in.</li>
+<li>Github is for social coding: if you want to write code, we encourage contributions through pull requests from
+<a href="http://help.github.com/forking/">forks of this repository</a>.  If you want to contribute code this way, please
+reference a JIRA ticket as well covering the specific issue you are addressing.</li>
+<li>Watch for upcoming articles on Spring by <a href="http://www.springsource.org/node/feed">subscribing</a> to springframework.org</li>
+</ul>
+
+<p>Before we accept a non-trivial patch or pull request we will need you to sign the
+<a href="https://support.springsource.com/spring_committer_signup">contributor&#39;s agreement</a>.
+Signing the contributor&#39;s agreement does not grant anyone commit rights to the main repository, but it does mean that we
+can accept your contributions, and you will get an author credit if we do.  Active contributors might be asked to join
+the core team, and given the ability to merge pull requests.</p>
+
+<h2 id="toc_5">Code Conventions and Housekeeping</h2>
+
+<p>None of these is essential for a pull request, but they will all help.  They can also be added after the original pull
+request but before a merge.</p>
+
+<ul>
+<li>Use the Spring Framework code format conventions. Import <code>eclipse-code-formatter.xml</code> from the root of the project
+if you are using Eclipse. If using IntelliJ, copy <code>spring-intellij-code-style.xml</code> to <code>~/.IntelliJIdea*/config/codestyles</code>
+and select spring-intellij-code-style from Settings -&gt; Code Styles.</li>
+<li>Make sure all new .java files to have a simple Javadoc class comment with at least an @author tag identifying you, and
+preferably at least a paragraph on what the class is for.</li>
+<li>Add the ASF license header comment to all new .java files (copy from existing files in the project)</li>
+<li>Add yourself as an @author to the .java files that you modify substantially (moew than cosmetic changes).</li>
+<li>Add some Javadocs and, if you change the namespace, some XSD doc elements.</li>
+<li>A few unit tests would help a lot as well - someone has to do it.</li>
+<li>If no-one else is using your branch, please rebase it against the current master (or other target branch in the main project).</li>
+</ul>
+
+  </div>
+
+  <footer class="footer">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span8">
+          <div class="navbar">
+            <div class="container">
+              <ul class="nav">
+                <li><a href="http://springframework.io/tools">Tools</a></li>
+                <li><a href="http://springframework.io/services">Services</a></li>
+                <li><a href="http://springframework.io/about">About Us</a></li>
+                <li><a href="http://springframework.io/jobs">Work With Us</a></li>
+              </ul>
+            </div>
+          </div>
+          &copy; <script type="text/javascript"> var d = new Date();
+                document.write(d.getFullYear());</script> GoPivotal, Inc. All Rights Reserved.
+          <a href="http://www.gopivotal.com/terms-of-use">Terms</a>,
+          <a href="http://www.gopivotal.com/privacy-policy">Privacy</a>, and
+          <a href="http://springframework.io/logos">Usage</a>
+        </div>
+        <div class="span4 footer-newsletter--wrapper pull-right">
+          <div class="footer-newsletter--container">
+            <form>
+              <label>
+                Subscribe to our newsletter
+              </label>
+              <div class="footer-subscribe--input--container">
+                <input class="footer-subscribe--input" placeholder="Email Address (NOT REAL)" />
+                <input type="submit" class="btn footer-subscibe--btn" value="Subscribe" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div id="scrim"></div>
+  <script type="text/html" id="project-documentation-widget-template">
+    <div class="right-pane-widget--container no-top-border project-documentation--container">
+        <div class="item-dropdown-widget">
+            <div class="item-dropdown--title">{@= name @}</div>
+            <div class="item--dropdown">
+                <div class="item--body">
+                    <div class="item--body-title">
+                        <div class="item--left-column">Release</div>
+                        <div class="item--right-column">Documentation</div>
+                    </div>
+                    {@ _.each(releases, function(release) { @}
+                    <div class="item--body--version">
+                        <div class="item--left-column">
+                            <p>{@= release.version @}</p>
+                            <div class="spring-icon {@= release.statusIconClass() @}"></div>
+                        </div>
+                        <div class="item--right-column">
+                            <a href='{@= release.refDocUrl @}' class="docs-link reference-link">Reference</a>
+                            <a href='{@= release.apiDocUrl @}' class="docs-link api-link">API</a>
+                        </div>
+                    </div>
+                    {@ }); @}
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="project-download-widget-controls-template">
+    <div class="js-download-widget-selector">
+        <select class='selector selectpicker'>
+            {@ _.each(releases, function(release, index) { @}
+            <option value="{@= index @}" data-content="<span>{@= release.versionDisplayName @}</span><div class='spring-icon {@= release.statusIconClass() @}'/>" data-current="{@= release.current @}"> ()</option>
+            {@ }); @}
+        </select>
+    </div>
+
+    <div class="item-slider-widget js-item-slider--wrapper">
+        <div class="item-slider--container">
+            <div class="item--slider js-item--slider"></div>
+            <div class="item js-active js-item" data-snippet-type='maven'>
+                Maven
+            </div>
+            <div class="item js-item" data-snippet-type='gradle'>
+                Gradle
+            </div>
+            <div class="item js-item" data-snippet-type='zip'>
+                Zip
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
+
+
+
+
+
+
+<script type="text/html" id="project-download-maven-widget-template">
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;{@= groupId @}&lt;/groupId&gt;
+        &lt;artifactId&gt;{@= artifactId @}&lt;/artifactId&gt;
+        &lt;version&gt;{@= version @}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+{@ if (repository) { @}
+&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;{@= repository.id @}&lt;/id&gt;
+        &lt;name&gt;{@= repository.name @}&lt;/name&gt;
+        &lt;url&gt;{@= repository.url @}&lt;/url&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;{@= repository.snapshotsEnabled @}&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;{@ } @}
+</script>
+
+
+
+
+
+
+
+<script type="text/html" id="project-download-gradle-widget-template">
+dependencies {
+    compile '{@= groupId @}:{@= artifactId @}:{@= version @}'
+}
+{@ if (repository) { @}
+repositories {
+    maven {
+        url '{@= repository.url @}'
+    }
+}
+{@ } @}
+</script>
+
+<script type="text/html" id="project-download-zip-widget-template">
+This is a zip url
+</script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42447510-1', 'cfapps.io');
+    ga('send', 'pageview');
+
+  </script>
+</body>
+</html>
